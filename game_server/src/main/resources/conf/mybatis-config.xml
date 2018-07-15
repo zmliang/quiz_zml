@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="IntegerArrayTypeHandler" type="com.manniwood.mmpt.typehandlers.IntegerArrayTypeHandler"/>
+        <package name="com.self.java.quiz.model"/>
+    </typeAliases>
+
+    <typeHandlers>
+        <package name="com.manniwood.mmpt.typehandlers"/>
+    </typeHandlers>
+
+    <mappers>
+        <mapper resource="com/self/java/quiz/dao/UserMapper.xml"/>
+    </mappers>
+</configuration>

@@ -10,5 +10,11 @@ public interface ILoginView extends BaseView {
     String getUserName();
     String getPassWord();
     void onLoginResult(User user);
+    void firstLogin(boolean isFirst);
+    void savePwd(boolean isSaved);
+    void autoLogin(boolean isAuto);
+
+    boolean autoLoginChecked();
+    boolean remeberPwdChecked();
 
 }

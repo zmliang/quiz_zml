@@ -1,28 +1,19 @@
 package com.self.quiz.presenter;
 
-import android.content.Context;
 import android.util.Log;
-
-import com.self.quiz.App;
 import com.self.quiz.modal.HttpResult;
 import com.self.quiz.modal.User;
 import com.self.quiz.utils.CallBack;
+import com.self.quiz.utils.IConstant;
 import com.self.quiz.utils.SharedPreferencesUtils;
 import com.self.quiz.utils.StringUtils;
 import com.self.quiz.view.ILoginView;
-
-import static com.self.quiz.utils.Constant.AUTO_LOGIN;
-import static com.self.quiz.utils.Constant.FIRST_KEY;
-import static com.self.quiz.utils.Constant.QUIZ;
-import static com.self.quiz.utils.Constant.SAVE_PWD;
-import static com.self.quiz.utils.Constant.USER_NAME;
-import static com.self.quiz.utils.Constant.USER_PWD;
 
 /**
  * Created by zmliang on 2018/7/15.
  */
 
-public class LoginPresenter extends BasePresenter<ILoginView> {
+public class LoginPresenter extends BasePresenter<ILoginView> implements IConstant{
     private final static String TAG = LoginPresenter.class.getSimpleName();
 
     private  ILoginView loginView;

@@ -1,5 +1,6 @@
-package com.self.quiz;
-import android.support.v7.app.AppCompatActivity;
+package com.self.quiz.activity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.self.quiz.App;
+import com.self.quiz.R;
 import com.self.quiz.components.BaseActivity;
 import com.self.quiz.modal.User;
 import com.self.quiz.presenter.LoginPresenter;
@@ -85,7 +88,10 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
 
     @Override
     public void onLoginResult(User user) {
-
+        if (user!=null){
+            startActivity(new Intent(this,GameActivity.class));
+            finish();
+        }
     }
 
     @Override

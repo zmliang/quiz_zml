@@ -91,7 +91,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements IConsta
 
             @Override
             public void onFailed(String message) {
-                loginView.onLoginResult(null);
+                loginView.onToast("登陆失败");
             }
 
             @Override
@@ -102,11 +102,11 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements IConsta
         addSubscription(mApi.login(name,pwd),subscriber1);
     }
 
-    public SharedPreferencesUtils createSp(){
+    private SharedPreferencesUtils createSp(){
         return new SharedPreferencesUtils(QUIZ);
     }
 
-    public void saveCheckBoxState(){
+    private void saveCheckBoxState(){
         if (loginView.autoLoginChecked()){
             createSp().putValues(new SharedPreferencesUtils.ContentValue(SAVE_PWD,true),
                     new SharedPreferencesUtils.ContentValue(AUTO_LOGIN,true),

@@ -50,6 +50,7 @@ public class RetrofitClient {
                     .setDateFormat("yyyy-MM-dd hh:mm:ss")
                     .create();
             OkHttpClient okHttpClient = builder.build();
+
             mRetrofit = new Retrofit.Builder()
                     .baseUrl(CommonApi.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
@@ -59,6 +60,9 @@ public class RetrofitClient {
         }
         return mRetrofit;
     }
+
+
+
     public static void close(){
         mRetrofit = null;
     }

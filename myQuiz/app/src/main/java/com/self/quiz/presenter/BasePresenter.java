@@ -32,6 +32,7 @@ public class BasePresenter<T> {
     public void onUnsubscribe(){
         if (compositeSubscription!=null &&
                 compositeSubscription.hasSubscriptions()){
+            compositeSubscription.clear();
             compositeSubscription.unsubscribe();
         }
     }

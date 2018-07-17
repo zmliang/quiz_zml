@@ -14,15 +14,16 @@
     <!-- Process annotations on registered beans like @Autowired... -->
     <context:annotation-config/>
 
-<!--
+
     <context:property-placeholder location="classpath*:conf/env.properties"/>
     <util:properties id="settings" location="classpath:conf/env.properties"/>
--->
 
 
+
+<!--
     <context:property-placeholder location="file:../config/env.properties" />
     <util:properties id="settings" location="file:../config/env.properties" />
-
+-->
 
 
     <!-- dataSource -->

@@ -3,6 +3,7 @@ package com.self.quiz.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,6 +22,7 @@ import com.self.quiz.widget.Loading;
 
 
 public class LoginActivity extends BaseActivity implements ILoginView,View.OnClickListener,CompoundButton.OnCheckedChangeListener{
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginPresenter loginPresenter = new LoginPresenter(this);
     private EditText name_et;
     private EditText pwd_et;
@@ -49,6 +51,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
         savePwd_ck = (CheckBox) findViewById(R.id.checkBox_password);
         autoLogin_ck= (CheckBox) findViewById(R.id.checkBox_login);
         seePwd_iv = (ImageView) findViewById(R.id.iv_see_password);
+        findViewById(R.id.btn_register).setOnClickListener(this);
         login_bt.setOnClickListener(this);
         savePwd_ck.setOnCheckedChangeListener(this);
         autoLogin_ck.setOnCheckedChangeListener(this);
@@ -89,7 +92,8 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
     @Override
     public void onLoginResult(User user) {
         if (user!=null){
-            startActivity(new Intent(this,GameActivity.class));
+            App.getInstance().setUser(user);
+            startActivity(new Intent(this,MainActivity.class));
             finish();
         }
     }
@@ -147,6 +151,9 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
                 break;
             case R.id.iv_see_password:
                 setPwdVisibility();
+                break;
+            case R.id.btn_register:
+                this.onToast("暂时未提供注册功能");
                 break;
             default:
                 break;

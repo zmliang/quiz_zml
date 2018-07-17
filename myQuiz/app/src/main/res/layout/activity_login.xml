@@ -145,4 +145,13 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_normal"/>
 
+    <Button
+        android:id="@+id/btn_register"
+        android:background="@android:color/transparent"
+        android:textSize="12sp"
+        android:text="@string/register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_36"
+        android:layout_marginTop="@dimen/dp_50"/>
+
 </LinearLayout>

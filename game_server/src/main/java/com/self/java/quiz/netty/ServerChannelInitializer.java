@@ -31,9 +31,11 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
         // compression.连接失败连接失败
         pipeline.addLast("deflater", new HttpContentCompressor());
         //保留用于处理普通Http请求，如查询服务器状态信息等
+
         pipeline.addLast("handler", serverHandler);
         pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
         pipeline.addLast(textWebSocketFrameHandler);
+
     }
 
 

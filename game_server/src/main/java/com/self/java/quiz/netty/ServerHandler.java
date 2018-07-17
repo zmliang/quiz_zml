@@ -29,7 +29,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request)
             throws Exception {
         logger.trace("MainServerHandler.channelRead, Uri: " + request.getUri());
-
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         if (decoder.path() == null) {
             throw new DecoderException("path error");

@@ -6,4 +6,5 @@
     <string name="check_login">自动登录</string>
     <string name="login">登录</string>
     <string name="login_ing">登录中...</string>
+    <string name="register">没有账号？去注册>></string>
 </resources>

@@ -11,7 +11,7 @@ import com.self.quiz.components.BaseActivity;
 public class GameActivity extends BaseActivity {
     @Override
     public void initView() {
-        new websocket().test();
+
     }
 
 }

@@ -3,10 +3,13 @@ package com.self.quiz.utils;
 import com.self.quiz.modal.HttpResult;
 import com.self.quiz.modal.User;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -24,9 +27,24 @@ public interface CommonApi {
     @GET("user")
     Observable<HttpResult<User>> login(@Query("nickName")String nickName,@Query("password")String password);
 
-    @POST("upload_avatar")
-    Observable<HttpResult<User>> upload_avatar();
+    @Multipart
+    @POST("upload")
+    Observable<HttpResult<User>> upload_avatar(@Part MultipartBody.Part imgs);
 
     @POST("update")
     Observable<HttpResult<String>> update(@Query("user")String user);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

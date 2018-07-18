@@ -69,13 +69,10 @@
 
     <!-- netty components -->
 
-    <bean id="userHandler" class="com.self.java.quiz.netty.UserHandler">
-    </bean>
-
-    <bean id="registerHandler" class="com.self.java.quiz.netty.RegisterHandler">
-
-    </bean>
+    <bean id="userHandler" class="com.self.java.quiz.netty.UserHandler"/>
+    <bean id="registerHandler" class="com.self.java.quiz.netty.RegisterHandler"/>
     <bean id="updateHandler" class="com.self.java.quiz.netty.UpdateHandler"/>
+    <bean id="uploadHandler" class="com.self.java.quiz.netty.UploadHandler"/>
 
     <bean id="urlHandlerMap" class="java.util.concurrent.ConcurrentHashMap">
         <constructor-arg>
@@ -88,6 +85,9 @@
                 </entry>
                 <entry key="/update">
                     <ref bean="updateHandler"/>
+                </entry>
+                <entry key="/upload">
+                    <ref bean="uploadHandler"/>
                 </entry>
             </map>
         </constructor-arg>

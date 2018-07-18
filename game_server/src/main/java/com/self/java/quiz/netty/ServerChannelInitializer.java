@@ -27,7 +27,7 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 
         pipeline.addLast(new HttpServerCodec());
 
-        pipeline.addLast("aggregator", new HttpObjectAggregator(10 * 1024));
+        pipeline.addLast("aggregator", new HttpObjectAggregator(10 * 1024*1024));
         // compression.连接失败连接失败
         pipeline.addLast("deflater", new HttpContentCompressor());
         //保留用于处理普通Http请求，如查询服务器状态信息等

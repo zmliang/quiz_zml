@@ -9,11 +9,18 @@ import com.self.quiz.modal.HttpResult;
 import com.self.quiz.modal.User;
 import com.self.quiz.utils.CallBack;
 import com.self.quiz.utils.StringUtils;
+import com.self.quiz.utils.UriUtils;
 import com.self.quiz.view.IUserCenterView;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Author   :  Tomcat
@@ -92,7 +99,33 @@ public class UserCenterPresenter extends BasePresenter<IUserCenterView> {
 
 
     public void onUpdateAvatar(Uri uri){
+        Log.i(TAG,"Uri:"+uri.toString());
+        File file = null;
+        try {
+            file = new File(UriUtils.getFilePathByUri(App.getInstance().getBaseContext(),uri));
+            Log.i(TAG,"length:"+file.length());
+        }catch (Exception E){
+            E.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image",file.getName(),requestBody);
+        CallBack<HttpResult<String>> callBack = new CallBack<HttpResult<String>>() {
+            @Override
+            public void onSuccess(HttpResult<String> model) {
 
+            }
+
+            @Override
+            public void onFailed(String message) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        };
+        addSubscription(mApi.upload_avatar(body),callBack);
     }
 
     @Override

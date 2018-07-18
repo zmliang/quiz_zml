@@ -22,4 +22,9 @@
         INSERT INTO "User" (user_id,nick_name,avatar_url,pass_word) VALUES (#{userId},#{nickName},#{avatarUrl},#{passWord})
     </insert>
 
+    <update id="updateUser" parameterType="User">
+        UPDATE "User" set "avatar_url"=#{avatarUrl}, "nick_name"=#{nickName},"pass_word"=#{passWord}
+        WHERE "user_id" = #{userId}
+    </update>
+
 </mapper>

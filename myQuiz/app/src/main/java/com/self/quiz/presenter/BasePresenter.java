@@ -19,7 +19,7 @@ public class BasePresenter<T> {
     protected CommonApi mApi;
     private CompositeSubscription compositeSubscription;
 
-    public void attachView(T view){
+    void attachView(T view){
         this.view = view;
         mApi= RetrofitClient.retrofit().create(CommonApi.class);
     }
@@ -29,7 +29,7 @@ public class BasePresenter<T> {
         onUnsubscribe();
     }
 
-    public void onUnsubscribe(){
+     void onUnsubscribe(){
         if (compositeSubscription!=null &&
                 compositeSubscription.hasSubscriptions()){
             compositeSubscription.clear();
@@ -37,7 +37,7 @@ public class BasePresenter<T> {
         }
     }
 
-    public void addSubscription(Observable observable, Subscriber subscriber){
+    void addSubscription(Observable observable, Subscriber subscriber){
         if (compositeSubscription == null){
             compositeSubscription = new CompositeSubscription();
         }

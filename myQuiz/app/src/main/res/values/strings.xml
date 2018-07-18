@@ -7,4 +7,19 @@
     <string name="login">登录</string>
     <string name="login_ing">登录中...</string>
     <string name="register">没有账号？去注册>></string>
+    <string name="navigation_drawer_open">打开</string>
+    <string name="navigation_drawer_close">关闭</string>
+
+    <string name="menu_title_setup">修改昵称</string>
+    <string name="menu_title_exit">退出</string>
+    <string name="menu_title_resetpwd">修改密码</string>
+
+    <string name="menu_title_share">分享</string>
+    <string name="menu_title_send">发送</string>
+    <string name="dialog_tips">提示</string>
+
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="if_exit">是否确定退出登录？</string>
+    <string name="choose_title">设置头像</string>
 </resources>

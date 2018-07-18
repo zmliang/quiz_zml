@@ -1,4 +1,4 @@
-package com.self.quiz.widget;
+package com.self.quiz.components;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,7 +24,7 @@ public class Loading extends ProgressDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_loading);
-        mTitleTv = (TextView) findViewById(R.id.tv_loading_dialog);
+        mTitleTv = findViewById(R.id.tv_loading_dialog);
         mTitleTv.setText(mMessage);
         setCancelable(false);
     }

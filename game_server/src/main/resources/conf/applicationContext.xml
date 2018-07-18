@@ -14,16 +14,16 @@
     <!-- Process annotations on registered beans like @Autowired... -->
     <context:annotation-config/>
 
-
+<!--
     <context:property-placeholder location="classpath*:conf/env.properties"/>
     <util:properties id="settings" location="classpath:conf/env.properties"/>
+-->
 
 
 
-<!--
     <context:property-placeholder location="file:../config/env.properties" />
     <util:properties id="settings" location="file:../config/env.properties" />
--->
+
 
 
     <!-- dataSource -->
@@ -75,6 +75,7 @@
     <bean id="registerHandler" class="com.self.java.quiz.netty.RegisterHandler">
 
     </bean>
+    <bean id="updateHandler" class="com.self.java.quiz.netty.UpdateHandler"/>
 
     <bean id="urlHandlerMap" class="java.util.concurrent.ConcurrentHashMap">
         <constructor-arg>
@@ -84,6 +85,9 @@
                 </entry>
                 <entry key="/register">
                     <ref bean="registerHandler"/>
+                </entry>
+                <entry key="/update">
+                    <ref bean="updateHandler"/>
                 </entry>
             </map>
         </constructor-arg>

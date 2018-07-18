@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
     <color name="orange_main">#ec6f1a</color>
     <color name="tv_gray_deep">#818181</color>
     <color name="orange_light">#ffd39b</color>
@@ -7,4 +11,19 @@
 
     <color name="transparent_half">#a0000000</color>
     <color name="orange_most">#C76114</color>
+    <color name="light_green">#C1FFC1</color>
+
+    <color name="font_gray_b">#d4d4d3</color>
+
+    <color name="font_tab_1">#42369a</color>
+    <color name="font_tab_0">#b1b1b1</color>
+
+
+    <color name="font_common_1">#424242</color>
+    <color name="font_common_2">#a1a1a1</color>
+    <color name="font_blue">#42369a</color>
+
+    <color name="font_green">#00cccc</color>
+
+    <color name="commom_background">#f3f3f3</color>
 </resources>

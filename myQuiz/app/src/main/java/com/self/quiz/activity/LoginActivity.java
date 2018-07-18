@@ -3,7 +3,6 @@ package com.self.quiz.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,7 +17,7 @@ import com.self.quiz.components.BaseActivity;
 import com.self.quiz.modal.User;
 import com.self.quiz.presenter.LoginPresenter;
 import com.self.quiz.view.ILoginView;
-import com.self.quiz.widget.Loading;
+import com.self.quiz.components.Loading;
 
 
 public class LoginActivity extends BaseActivity implements ILoginView,View.OnClickListener,CompoundButton.OnCheckedChangeListener{
@@ -40,17 +39,18 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
     @Override
     protected void onStart(){
         super.onStart();
-        loginPresenter.tryAutoLogin();
+        final boolean autoLogin =  getIntent().getBooleanExtra("AUTO_LOGIN",true);
+        loginPresenter.tryAutoLogin(autoLogin);
     }
 
     @Override
     public void initView() {
-        login_bt = (Button)findViewById(R.id.btn_login);
-        name_et = (EditText) findViewById(R.id.et_account);
-        pwd_et = (EditText) findViewById(R.id.et_password);
-        savePwd_ck = (CheckBox) findViewById(R.id.checkBox_password);
-        autoLogin_ck= (CheckBox) findViewById(R.id.checkBox_login);
-        seePwd_iv = (ImageView) findViewById(R.id.iv_see_password);
+        login_bt = findViewById(R.id.btn_login);
+        name_et =  findViewById(R.id.et_account);
+        pwd_et =  findViewById(R.id.et_password);
+        savePwd_ck =  findViewById(R.id.checkBox_password);
+        autoLogin_ck=  findViewById(R.id.checkBox_login);
+        seePwd_iv =  findViewById(R.id.iv_see_password);
         findViewById(R.id.btn_register).setOnClickListener(this);
         login_bt.setOnClickListener(this);
         savePwd_ck.setOnCheckedChangeListener(this);
@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
 
     @Override
     public void onToast(String msg) {
-        Toast.makeText(App.getInstance().getBaseContext(),msg,Toast.LENGTH_LONG).show();
+        Toast.makeText(App.getInstance().getBaseContext(),msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override

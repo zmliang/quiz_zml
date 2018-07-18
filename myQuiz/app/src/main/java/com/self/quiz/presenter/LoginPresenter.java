@@ -22,14 +22,14 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements IConsta
         attachView(view);
     }
 
-    public void tryAutoLogin(){
+    public void tryAutoLogin(boolean auto){
         final boolean isFirst = firstLogin();
         loginView.firstLogin(isFirst);
         final boolean savePwd = savePwd();
         loginView.savePwd(savePwd);
         final boolean autoLogin = autoLogin();
         loginView.autoLogin(autoLogin);
-        if (autoLogin){
+        if (autoLogin && auto){
             login();
         }
     }
@@ -85,8 +85,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements IConsta
             @Override
             public void onSuccess(HttpResult<User> model) {
                 Log.i(TAG,"http success:"+model.toString());
-                saveCheckBoxState();
-                loginView.onLoginResult(model.getData());
+                if (model.getCode() == 200){
+                    saveCheckBoxState();
+                    loginView.onLoginResult(model.getData());
+                }else {
+                    loginView.onToast("登录失败");
+                }
+
             }
 
             @Override

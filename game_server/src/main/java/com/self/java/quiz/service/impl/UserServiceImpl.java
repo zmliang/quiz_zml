@@ -28,7 +28,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean updateUserInfor(User user) throws Exception {
-        return false;
+        return userDao.updateUser(user)>0;
     }
 
     @Override

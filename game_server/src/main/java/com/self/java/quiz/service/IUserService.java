@@ -17,7 +17,7 @@ public interface IUserService {
 
     boolean updateUserInfor(final User user)throws Exception;
 
-    boolean updateUserAvatar(final String url)throws Exception;
+    boolean updateUserAvatar(final String url,final String userId)throws Exception;
 
     boolean register(User user)throws Exception;
 

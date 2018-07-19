@@ -27,4 +27,9 @@
         WHERE "user_id" = #{userId}
     </update>
 
+    <update id="updateUserAvatar" parameterType="String">
+        UPDATE "User" set "avatar_url"=#{avatarUrl}
+        WHERE "user_id" = #{userId}
+    </update>
+
 </mapper>

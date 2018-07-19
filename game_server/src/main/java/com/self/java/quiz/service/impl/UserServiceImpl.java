@@ -32,8 +32,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean updateUserAvatar(String url) throws Exception {
-        return false;
+    public boolean updateUserAvatar(String url,String userId) throws Exception {
+        return userDao.updateUserAvatar(url,userId)>0;
     }
 
     @Override

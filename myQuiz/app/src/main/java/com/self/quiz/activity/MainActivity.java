@@ -18,13 +18,16 @@ import com.bumptech.glide.Glide;
 import com.self.quiz.App;
 import com.self.quiz.R;
 import com.self.quiz.components.BaseActivity;
+import com.self.quiz.components.CountDownView;
 import com.self.quiz.components.CustomDialog;
 import com.self.quiz.components.Loading;
 import com.self.quiz.components.MenuHeader;
+import com.self.quiz.components.ResetPwdDialog;
 import com.self.quiz.modal.User;
 import com.self.quiz.presenter.UserCenterPresenter;
 import com.self.quiz.utils.DialogUtils;
 import com.self.quiz.utils.GlideCircleTransform;
+import com.self.quiz.utils.StringUtils;
 import com.self.quiz.view.IUserCenterView;
 
 import static com.self.quiz.utils.DialogUtils.CROP_SMALL_PICTURE;
@@ -56,6 +59,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         naviView.setNavigationItemSelectedListener(this);
         naviView.addHeaderView(MenuHeader.header(this,this));
 
+
     }
 
 
@@ -75,12 +79,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_reset_pwd:
                 onResetPwd();
-                break;
+                return;
             case R.id.nav_share:
                 break;
             default:
                 break;
         }
+        closeDrawer();
+    }
+
+    private void closeDrawer(){
         if (drawer !=null)
             drawer.closeDrawer(GravityCompat.START);
     }
@@ -121,7 +129,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void onResetPwd(){
-        userCenterPresenter.onResetPwd("zhangmingliang7515");
+        new ResetPwdDialog(this, new ResetPwdDialog.onClickedListener() {
+            @Override
+            public void onClicked(boolean confirm, String pwd) {
+                if (confirm && !StringUtils.isNull(pwd)){
+                    userCenterPresenter.onResetPwd(pwd);
+                    closeDrawer();
+                }
+            }
+        }).show();
     }
 
     private void onExit(){
@@ -139,8 +155,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
         intent.putExtra("AUTO_LOGIN",false);
         App.getInstance().setUser(null);
-        startActivity(intent);
+        this.startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void startActivity(Intent intent){
+        super.startActivity(intent);
+
     }
 
 

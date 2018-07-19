@@ -27,12 +27,12 @@ public interface CommonApi {
     @GET("user")
     Observable<HttpResult<User>> login(@Query("nickName")String nickName,@Query("password")String password);
 
-    @Multipart
     @POST("upload")
-    Observable<HttpResult<User>> upload_avatar(@Part MultipartBody.Part imgs);
+    Observable<HttpResult<String>> upload_avatar(@Body RequestBody imgs, @Query("fileName")String fileName,@Query("userId")String userId);
 
     @POST("update")
     Observable<HttpResult<String>> update(@Query("user")String user);
+
 }
 
 

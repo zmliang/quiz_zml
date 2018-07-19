@@ -11,15 +11,12 @@ import com.self.quiz.utils.CallBack;
 import com.self.quiz.utils.StringUtils;
 import com.self.quiz.utils.UriUtils;
 import com.self.quiz.view.IUserCenterView;
-
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
-
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -101,31 +98,49 @@ public class UserCenterPresenter extends BasePresenter<IUserCenterView> {
     public void onUpdateAvatar(Uri uri){
         Log.i(TAG,"Uri:"+uri.toString());
         File file = null;
+        FileInputStream fis = null;
         try {
+            //noinspection ConstantConditions
             file = new File(UriUtils.getFilePathByUri(App.getInstance().getBaseContext(),uri));
-            Log.i(TAG,"length:"+file.length());
+
+
         }catch (Exception E){
             E.printStackTrace();
         }
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"),file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image",file.getName(),requestBody);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/xml; charset=UTF-8"),imageToBytes(file));
         CallBack<HttpResult<String>> callBack = new CallBack<HttpResult<String>>() {
             @Override
             public void onSuccess(HttpResult<String> model) {
-
+                Log.i(TAG,"onSuccess:"+model.toString());
             }
 
             @Override
             public void onFailed(String message) {
-
+                Log.i(TAG,"onFailed:");
             }
 
             @Override
             public void onFinished() {
-
+                Log.i(TAG,"onFinished:");
             }
         };
-        addSubscription(mApi.upload_avatar(body),callBack);
+        assert file != null;
+        addSubscription(mApi.upload_avatar(requestBody,file.getName(),App.getInstance().getUser().getUserId()),callBack);
+    }
+
+    private byte[] imageToBytes(File file){
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while (-1!=(len = fis.read(buffer))){
+                bao.write(buffer,0,len);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return bao.toByteArray();
     }
 
     @Override

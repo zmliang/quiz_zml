@@ -36,7 +36,7 @@ public interface IUserDao {
      * @return
      * @throws Exception
      */
-    int updateUserAvatar(String avatarUrl)throws Exception;
+    int updateUserAvatar(@Param("avatarUrl") String avatarUrl,@Param("userId")String userId)throws Exception;
 
     /**
      * 根据用户名和密码登陆

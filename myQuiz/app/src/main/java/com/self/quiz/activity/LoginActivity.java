@@ -25,7 +25,6 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
     private LoginPresenter loginPresenter = new LoginPresenter(this);
     private EditText name_et;
     private EditText pwd_et;
-    private Button login_bt;
     private CheckBox savePwd_ck;
     private CheckBox autoLogin_ck;
     private ImageView seePwd_iv;
@@ -45,7 +44,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
 
     @Override
     public void initView() {
-        login_bt = findViewById(R.id.btn_login);
+        Button login_bt = findViewById(R.id.btn_login);
         name_et =  findViewById(R.id.et_account);
         pwd_et =  findViewById(R.id.et_password);
         savePwd_ck =  findViewById(R.id.checkBox_password);
@@ -94,6 +93,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
         if (user!=null){
             App.getInstance().setUser(user);
             startActivity(new Intent(this,MainActivity.class));
+
             finish();
         }
     }

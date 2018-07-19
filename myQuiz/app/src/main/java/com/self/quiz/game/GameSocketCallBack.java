@@ -1,6 +1,4 @@
-package com.self.quiz.utils.websocket;
-
-import android.util.Log;
+package com.self.quiz.game;
 
 import org.java_websocket.client.WebSocketClient;
 
@@ -12,11 +10,11 @@ import rx.Subscriber;
  * CopyRight:  JinkeGroup
  */
 
-public abstract class WebSocketCB extends Subscriber<WebSocketInfo> {
-    abstract void onMessage(String message);
-    abstract void onClose();
-    abstract void onOpen(WebSocketClient client);
-    abstract void onReconnect();
+public abstract class GameSocketCallBack extends Subscriber<GameSocketInfo> {
+    public abstract void onMessage(String message);
+    public abstract void onClose();
+    public abstract void onOpen(WebSocketClient client);
+    public abstract void onReconnect();
     private boolean hasOpened = false;
 
     @Override
@@ -26,7 +24,11 @@ public abstract class WebSocketCB extends Subscriber<WebSocketInfo> {
         hasOpened = false;
     }
     @Override
-    public void onNext(WebSocketInfo webSocketInfo){
+    public void onError(Throwable e) {
+
+    }
+    @Override
+    public void onNext(GameSocketInfo webSocketInfo){
         if (webSocketInfo.getMessage()!=null){
             onMessage(webSocketInfo.getMessage());
         }else if (webSocketInfo.isOnOpen()){

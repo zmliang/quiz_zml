@@ -11,6 +11,8 @@ public class Game implements Serializable{
     private PersonalInfo my;
     private PersonalInfo opposite;
 
+    public static final AttributeKey<Game> GAME_ATTRIBUTE_KEY = AttributeKey.valueOf("Game.gameCode");
+
     public Game() {
     }
 

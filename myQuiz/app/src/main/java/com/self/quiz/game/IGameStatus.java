@@ -6,7 +6,7 @@ package com.self.quiz.game;
  * CopyRight:  JinkeGroup
  */
 
-public interface ISocketStatus{
+public interface IGameStatus {
     void open();
     void message(String data);
     void closed();

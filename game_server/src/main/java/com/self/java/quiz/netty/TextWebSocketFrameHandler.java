@@ -1,5 +1,11 @@
 package com.self.java.quiz.netty;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.self.java.quiz.model.Game;
+import com.self.java.quiz.model.PkRequest;
+import com.self.java.quiz.model.Question;
+import com.self.java.quiz.service.IGameProtocol;
 import com.self.java.quiz.service.IGameService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -11,9 +17,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @ChannelHandler.Sharable
 @Controller
-public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> implements IGameProtocol{
     private static final Logger logger = LogManager.getLogger(TextWebSocketFrameHandler.class.getName());
 
     @Autowired
@@ -25,7 +33,23 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         logger.trace("msg:"+msg.text());
         logger.trace("localAddress = " + incoming.remoteAddress().toString() + "\n");
         String message = msg.text();
-        incoming.writeAndFlush(new TextWebSocketFrame(message));
+        if (gameService.isPkRequest(message)){
+            incoming.writeAndFlush(new TextWebSocketFrame(PK_RESPONSE_SUCCESS));
+            final PkRequest pkRequest = JSON.parseObject(message, PkRequest.class);
+            final List<Question> questions = gameService.onPrepareQuestion(pkRequest.getqType());
+            if (questions!=null){
+                incoming.writeAndFlush(new TextWebSocketFrame(questions.toString()));
+            }else {
+                incoming.writeAndFlush(new TextWebSocketFrame(ERROR));
+            }
+        }else if (gameService.isPkEnd(message)){
+            gameService.onPkEnd(incoming.attr(Game.GAME_ATTRIBUTE_KEY).get());
+            incoming.attr(Game.GAME_ATTRIBUTE_KEY).remove();
+            incoming.writeAndFlush(new TextWebSocketFrame(PK_END_CONFIRM));
+        }else {
+            incoming.writeAndFlush(new TextWebSocketFrame(UNKNOWN));
+        }
+
     }
 
     @Override
@@ -39,9 +63,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         Channel incoming = ctx.channel();
         logger.trace("Client:" + incoming.remoteAddress().toString() + " leave");
         try {
-         //   gameService.quitGame(ctx);
+            gameService.onPkQuit(incoming.attr(Game.GAME_ATTRIBUTE_KEY).get());
         } catch (Exception e) {
             logger.error(e.toString());
+        }finally {
+            incoming.attr(Game.GAME_ATTRIBUTE_KEY).remove();
         }
     }
 
@@ -63,10 +89,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         Channel incoming = ctx.channel();
         logger.error("Client:" + incoming.remoteAddress().toString() + ", Exception:" + cause.toString());
         try {
-         //   gameService.quitGame(ctx);
+            gameService.onPkError(incoming.attr(Game.GAME_ATTRIBUTE_KEY).get());
             ctx.close();
         } catch (Exception e) {
             logger.error(e.toString());
+        }finally {
+            incoming.attr(Game.GAME_ATTRIBUTE_KEY).remove();
         }
     }
 

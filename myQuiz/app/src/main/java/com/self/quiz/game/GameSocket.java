@@ -1,8 +1,6 @@
-package com.self.quiz.utils.websocket;
+package com.self.quiz.game;
 
 import android.util.Log;
-
-import com.self.quiz.game.ISocketStatus;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -15,41 +13,41 @@ import java.net.URI;
  * CopyRight:  JinkeGroup
  */
 
-public class WSocketMgr extends WebSocketClient{
-    private final static String TAG = WSocketMgr.class.getSimpleName();
+public class GameSocket extends WebSocketClient{
+    private final static String TAG = GameSocket.class.getSimpleName();
 
-    private ISocketStatus socketStatus;
+    private IGameStatus gameStatus;
 
-    private WSocketMgr(URI serverURI) {
+    private GameSocket(URI serverURI) {
         super(serverURI);
     }
 
-    public WSocketMgr( ISocketStatus status) {
-        this(URI.create("ws://47.98.219.111:8800"));
-        socketStatus = status;
+    public GameSocket(IGameStatus status) {
+        this(URI.create("ws://47.98.219.111:9002/ws"));
+        gameStatus = status;
     }
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         Log.i(TAG,"onOpen:"+handshakedata.getHttpStatusMessage());
-        socketStatus.open();
+        gameStatus.open();
     }
 
     @Override
     public void onMessage(String message) {
         Log.i(TAG,"onMessage:"+message);
-        socketStatus.message(message);
+        gameStatus.message(message);
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
         Log.i(TAG,"onClose:"+reason);
-        socketStatus.closed();
+        gameStatus.closed();
     }
 
     @Override
     public void onError(Exception ex) {
         Log.i(TAG,"onError:"+ex.getMessage());
-        socketStatus.error();
+        gameStatus.error();
     }
 }

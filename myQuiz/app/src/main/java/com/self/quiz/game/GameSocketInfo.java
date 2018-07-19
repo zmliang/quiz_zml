@@ -1,4 +1,4 @@
-package com.self.quiz.utils.websocket;
+package com.self.quiz.game;
 
 import org.java_websocket.client.WebSocketClient;
 
@@ -8,22 +8,22 @@ import org.java_websocket.client.WebSocketClient;
  * CopyRight:  JinkeGroup
  */
 
-public class WebSocketInfo {
+public class GameSocketInfo {
     private WebSocketClient webSocketClient;
     private String message;
     private boolean onOpen;
     private boolean onReconnect;
 
-    private WebSocketInfo(){
+    private GameSocketInfo(){
 
     }
 
-    WebSocketInfo(WebSocketClient socket,boolean onOpen){
+    GameSocketInfo(WebSocketClient socket, boolean onOpen){
         webSocketClient = socket;
         this.onOpen = onOpen;
     }
 
-    WebSocketInfo(WebSocketClient client,String msg){
+    GameSocketInfo(WebSocketClient client, String msg){
         this.webSocketClient = client;
         this.message = msg;
     }

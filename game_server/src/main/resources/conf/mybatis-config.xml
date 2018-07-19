@@ -14,5 +14,6 @@
 
     <mappers>
         <mapper resource="com/self/java/quiz/dao/UserMapper.xml"/>
+        <mapper resource="com/self/java/quiz/dao/QuestionMapper.xml"/>
     </mappers>
 </configuration>

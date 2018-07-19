@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.self.java.quiz.dao.IQuestionDao">
+
+    <resultMap id="questionMap" type="Question">
+        <result property="QuestionContent" column="content"/>
+        <result property="optionA" column="option_a"/>
+        <result property="optionB" column="option_b"/>
+        <result property="optionC" column="option_c"/>
+        <result property="optionD" column="option_d"/>
+        <result property="answer" column="answer"/>
+    </resultMap>
+
+    <select id="selectQuesRandom" parameterType="int" resultMap="questionMap">
+        SELECT "content","option_a","option_b","option_c","option_d","answer"
+        FROM "Question"
+        ORDER BY RANDOM()
+        LIMIT #{limitCount}
+    </select>
+
+    <select id="selectQuesByType" parameterType="int" resultMap="questionMap">
+        SELECT "content","option_a","option_b","option_c","option_d","answer"
+        FROM "Question"
+        <choose>
+
+            <when test="type == 1"><!--国学-->
+                WHERE ("type" =1 OR "type"= 9 OR "type"=40)
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+            <when test="type == 2"><!--历史-->
+                WHERE ("type" =2 OR "type"= 10)
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+            <when test="type == 3"><!--科学-->
+                WHERE ("type" = 3 OR "type"=14 OR "type"=15 OR "type"=16 OR "type"=17 OR "type"=18 OR "type"=36)
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+            <when test="type == 4">
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+            <when test="type == 5"><!--影视-->
+                WHERE ("type" = 4 OR "type"=19 OR "type"=20 OR "type"=22 OR "type"=23 OR "type"=38)
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+            <when test="type == 6"><!--军事-->
+                WHERE ("type" = 6 OR "type"=13)
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+            <when test="type == 7"><!--时尚-->
+                WHERE ("type" = 7 OR "type"=37 OR "type"=31 OR "type"=32 OR "type"=33 OR "type"=34 OR "type" = 12 OR "type"=24)
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+            <when test="type == 8"><!--体育-->
+                WHERE ("type" = 8 OR "type"=25)
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+
+            <!--40序号之后的其他类型-->
+            <when test="type > 40">
+                WHERE "type"=#{type}
+                ORDER BY RANDOM()
+                LIMIT #{limitCount}
+            </when>
+        </choose>
+    </select>
+
+</mapper>

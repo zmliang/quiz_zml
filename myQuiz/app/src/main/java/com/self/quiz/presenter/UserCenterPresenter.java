@@ -94,7 +94,6 @@ public class UserCenterPresenter extends BasePresenter<IUserCenterView> {
 
     }
 
-
     public void onUpdateAvatar(Uri uri){
         Log.i(TAG,"Uri:"+uri.toString());
         File file = null;
@@ -102,8 +101,6 @@ public class UserCenterPresenter extends BasePresenter<IUserCenterView> {
         try {
             //noinspection ConstantConditions
             file = new File(UriUtils.getFilePathByUri(App.getInstance().getBaseContext(),uri));
-
-
         }catch (Exception E){
             E.printStackTrace();
         }

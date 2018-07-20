@@ -23,6 +23,7 @@ import com.self.quiz.components.CustomDialog;
 import com.self.quiz.components.Loading;
 import com.self.quiz.components.MenuHeader;
 import com.self.quiz.components.ResetPwdDialog;
+import com.self.quiz.game.Game;
 import com.self.quiz.modal.User;
 import com.self.quiz.presenter.UserCenterPresenter;
 import com.self.quiz.utils.DialogUtils;
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         naviView = (drawer.findViewById(R.id.nav_view));
         naviView.setNavigationItemSelectedListener(this);
         naviView.addHeaderView(MenuHeader.header(this,this));
+        findViewById(R.id.start_game).setOnClickListener(this);
 
 
     }
@@ -168,6 +170,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onClick(View v) {
+        final int Id = v.getId();
+        if (Id == R.id.start_game){
+            startActivity(new Intent(this, GameActivity.class));
+            return;
+        }
         onUpdateAvatar();
     }
 

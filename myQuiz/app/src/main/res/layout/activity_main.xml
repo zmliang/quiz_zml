@@ -19,6 +19,7 @@
             android:layout_height="match_parent" >
 
             <Button
+                android:id="@+id/start_game"
                 android:text="开始游戏"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

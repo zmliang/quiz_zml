@@ -5,6 +5,10 @@ package com.self.quiz.utils;
  */
 
 public interface IGameProtocol {
+    String SOCKET_OPEN = "open";
+    String SOCKET_CLOSE = "close";
+    String SOCKET_MSG = "message";
+
     String PK_REQUEST = "pk_request";
     String PK_RESPONSE_SUCCESS = "pk_response_success";
     String ERROR = "error";

@@ -38,7 +38,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             final PkRequest pkRequest = JSON.parseObject(message, PkRequest.class);
             final List<Question> questions = gameService.onPrepareQuestion(pkRequest.getqType());
             if (questions!=null){
-                incoming.writeAndFlush(new TextWebSocketFrame(questions.toString()));
+                incoming.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(questions)));
             }else {
                 incoming.writeAndFlush(new TextWebSocketFrame(ERROR));
             }

@@ -20,6 +20,4 @@ public interface IQuestionDao {
 
     List<Question> selectQuesByType(@Param("type")int type,@Param("limitCount")int limitCount)throws Exception;
 
-
-
 }

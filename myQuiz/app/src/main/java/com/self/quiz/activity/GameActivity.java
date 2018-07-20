@@ -1,6 +1,7 @@
 package com.self.quiz.activity;
 
 import com.self.quiz.components.BaseActivity;
+import com.self.quiz.presenter.GamePresenter;
 
 /**
  * Author   :  Tomcat
@@ -11,7 +12,7 @@ import com.self.quiz.components.BaseActivity;
 public class GameActivity extends BaseActivity {
     @Override
     public void initView() {
-
+        new GamePresenter().test();
     }
 
 }

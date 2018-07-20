@@ -7,7 +7,7 @@ package com.self.quiz.game;
  */
 
 public interface IGameStatus {
-    void open();
+    void open(GameSocket socket);
     void message(String data);
     void closed();
     void error();

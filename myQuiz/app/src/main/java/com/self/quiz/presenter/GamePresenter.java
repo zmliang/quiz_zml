@@ -137,6 +137,11 @@ public class GamePresenter  implements IGameProtocol{
         return  this;
     }
 
+    public void again(int qType){
+        questions.clear();
+        this.send(new Gson().toJson(new PkRequest(PK_REQUEST,qType,null)));
+    }
+
     public GamePresenter send(String message){
         gameSocket.send(message);
         return this;

@@ -217,7 +217,7 @@ public class CountDownView extends TextView {
         }
     };
 
-    private void reset(){
+    public void reset(){
         progress = TIME_MILLIS;
         invalidate();
     }

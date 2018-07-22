@@ -17,28 +17,27 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:textSize="20sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:visibility="gone"
-        android:textSize="18sp"
-        android:textAlignment="center"
         android:id="@+id/question_content"
         android:layout_width="280dp"
         android:layout_height="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countDownView" />
 
     <LinearLayout
-        android:visibility="gone"
-        android:textSize="16sp"
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -46,78 +45,114 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="15dp"
+        android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/question_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
 
         <android.support.v7.widget.CardView
-            android:onClick="onOption"
             android:id="@+id/option_a_parent"
             android:layout_width="250dp"
             android:layout_height="60dp"
+            android:onClick="onOption"
             tools:layout_editor_absoluteX="67dp"
             tools:layout_editor_absoluteY="257dp">
+
             <TextView
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:tag="A"
                 android:id="@+id/option_a"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:tag="A"
+                android:textSize="18sp" />
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:onClick="onOption"
             android:id="@+id/option_b_parent"
             android:layout_width="250dp"
             android:layout_height="60dp"
+            android:onClick="onOption"
             tools:layout_editor_absoluteX="67dp"
-            tools:layout_editor_absoluteY="435dp" >
+            tools:layout_editor_absoluteY="435dp">
+
             <TextView
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:tag="B"
                 android:id="@+id/option_b"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:tag="B"
+                android:textSize="18sp" />
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:onClick="onOption"
             android:id="@+id/option_c_parent"
             android:layout_width="250dp"
             android:layout_height="60dp"
+            android:onClick="onOption"
             tools:layout_editor_absoluteX="67dp"
-            tools:layout_editor_absoluteY="161dp" >
+            tools:layout_editor_absoluteY="161dp">
+
             <TextView
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:tag="C"
                 android:id="@+id/option_c"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:tag="C"
+                android:textSize="18sp" />
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:id="@+id/option_d_parent"
-            android:onClick="onOption"
             android:layout_width="250dp"
             android:layout_height="60dp"
+            android:onClick="onOption"
             tools:layout_editor_absoluteX="67dp"
-            tools:layout_editor_absoluteY="348dp" >
+            tools:layout_editor_absoluteY="348dp">
+
             <TextView
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:tag="D"
                 android:id="@+id/option_d"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:tag="D"
+                android:textSize="18sp" />
         </android.support.v7.widget.CardView>
     </LinearLayout>
+
+    <RelativeLayout
+        android:onClick="onOption"
+        android:id="@+id/again"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question_content">
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="再来一次"
+            android:textSize="5sp" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/again"
+            tools:layout_editor_absoluteX="162dp"
+            tools:layout_editor_absoluteY="180dp" />
+
+    </RelativeLayout>
+
+
 </android.support.constraint.ConstraintLayout>

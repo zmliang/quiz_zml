@@ -124,7 +124,7 @@ public class GameActivity extends BaseActivity implements IGameView,CountDownVie
 
     @Override
     public void opened() {
-
+        timer.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -133,6 +133,13 @@ public class GameActivity extends BaseActivity implements IGameView,CountDownVie
     }
 
     public void onOption(View view){
+        final int id = view.getId();
+        if (id == R.id.again){
+            view.setVisibility(View.GONE);
+            timer.setVisibility(View.VISIBLE);
+            gamePresenter.again(4);
+            return;
+        }
         timer.stop();
         setAnswer(currentQues.getAnswer());
     }
@@ -180,7 +187,9 @@ public class GameActivity extends BaseActivity implements IGameView,CountDownVie
     @Override
     public void gameover() {
         onToast("游戏结束");
+        timer.reset();
         timer.setVisibility(View.INVISIBLE);
+        findViewById(R.id.again).setVisibility(View.VISIBLE);
     }
 
     @Override

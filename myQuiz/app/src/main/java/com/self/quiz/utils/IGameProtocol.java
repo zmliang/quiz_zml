@@ -15,4 +15,10 @@ public interface IGameProtocol {
     String PK_END = "pk_end";
     String UNKNOWN = "unknown";
     String PK_END_CONFIRM = "pk_end_confirm";
+
+    int MSG_SOCKET_OPENED = 0X04;
+    int MSG_SOCKET_CLOSED = 0X05;
+    int MSG_SOCKET_MESSAGE = 0X06;
+    int MSG_SOCKET_ERROR = 0X07;
+    int MSG_NEXT_QUESTION = 0X08;
 }

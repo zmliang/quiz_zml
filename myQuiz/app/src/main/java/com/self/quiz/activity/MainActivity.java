@@ -42,14 +42,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final String TAG = MainActivity.class.getSimpleName();
     private DrawerLayout drawer;
     private NavigationView naviView;
-    private Loading loading;
     private UserCenterPresenter userCenterPresenter = new UserCenterPresenter(this);
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
-        setContentView(R.layout.activity_main);
-        super.onCreate(savedInstanceState);
+    protected int getLayoutID() {
+        return R.layout.activity_main;
     }
 
     @Override

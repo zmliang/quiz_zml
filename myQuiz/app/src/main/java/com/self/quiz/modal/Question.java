@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class Question implements Serializable {
 
-    private String QuestionContent;
+    private String questionContent;
     private String optionA;
     private String optionB;
     private String optionC;
@@ -21,7 +21,7 @@ public class Question implements Serializable {
 
     }
     public Question(String content, String a, String b, String c, String d, String ar){
-        this.QuestionContent = content;
+        this.questionContent = content;
         this.optionA = a;
         this.optionB = b;
         this.optionC = c;
@@ -30,11 +30,11 @@ public class Question implements Serializable {
     }
 
     public String getQuestionContent() {
-        return QuestionContent;
+        return questionContent;
     }
 
     public void setQuestionContent(String questionContent) {
-        QuestionContent = questionContent;
+        questionContent = questionContent;
     }
 
     public String getOptionA() {
@@ -80,7 +80,7 @@ public class Question implements Serializable {
     @Override
     public String toString() {
         return "Question{" +
-                "QuestionContent='" + QuestionContent + '\'' +
+                "questionContent='" + questionContent + '\'' +
                 ", optionA='" + optionA + '\'' +
                 ", optionB='" + optionB + '\'' +
                 ", optionC='" + optionC + '\'' +

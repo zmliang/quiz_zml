@@ -28,19 +28,18 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
     private CheckBox savePwd_ck;
     private CheckBox autoLogin_ck;
     private ImageView seePwd_iv;
-    private Loading loading ;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_login);
-        super.onCreate(savedInstanceState);
-    }
     @Override
     protected void onStart(){
         super.onStart();
         final boolean autoLogin =  getIntent().getBooleanExtra("AUTO_LOGIN",true);
         loginPresenter.tryAutoLogin(autoLogin);
     }
+
+    @Override
+    protected int getLayoutID(){
+         return R.layout.activity_login;
+    };
 
     @Override
     public void initView() {

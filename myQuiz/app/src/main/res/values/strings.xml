@@ -25,4 +25,6 @@
 
     <string name="old_pwd">旧密码</string>
     <string name="new_pwd">新密码</string>
+
+    <string name="connecting">连接中...</string>
 </resources>

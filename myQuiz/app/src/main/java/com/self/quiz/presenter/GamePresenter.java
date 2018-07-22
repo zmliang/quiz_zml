@@ -1,5 +1,8 @@
 package com.self.quiz.presenter;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -11,6 +14,7 @@ import com.self.quiz.modal.PkRequest;
 import com.self.quiz.modal.Question;
 import com.self.quiz.utils.IGameProtocol;
 import com.self.quiz.utils.JsonUtils;
+import com.self.quiz.view.IGameView;
 
 import org.json.JSONArray;
 
@@ -24,95 +28,126 @@ import java.util.List;
  * CopyRight:  JinkeGroup
  */
 
-public class GamePresenter extends BasePresenter<IGameStatus> implements IGameProtocol{
+public class GamePresenter  implements IGameProtocol{
     private static final String TAG = GamePresenter.class.getSimpleName();
+    private final IGameView status;
+    GameSocket gameSocket = null;
+    private List<Question> questions ;
+    private final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_SOCKET_OPENED:
+                    status.opened();
+                    break;
+                case MSG_SOCKET_MESSAGE:
+                    questions = (List<Question>)msg.obj;
+                    status.next(questions.get(0),1);
+                    questions.remove(0);
+                    print(questions);
+                    break;
+                case MSG_SOCKET_CLOSED:
+                    status.closed();
+                    break;
+                case MSG_SOCKET_ERROR:
+                    status.error();
+                //    status.onToast("连接出错");
+                    break;
+                case MSG_NEXT_QUESTION:
+                    final int size = questions.size();
+                    Log.i(TAG,"size"+size);
+                    if (size<=0){
+                        status.gameover();
+                    }else {
+                        Question q = questions.get(0);
+                        status.next(q,6-size);
+                        questions.remove(0);
+                        print(questions);
+                    }
+                    break;
+                default:
+                    break;
+                  }
+            status.onCancelDialog();
+            }
+    };
 
+    private void print(List<Question> questions){
+        Log.i(TAG,"---------------------------------");
+        for (Question question:questions){
+            Log.i(TAG,question.toString());
+        }
+        Log.i(TAG,"------------------------------------");
+    }
 
-    public void test(){
-        IGameStatus   status = new IGameStatus() {
+    public void readyNextQuestion(){
+        Message msg = mHandler.obtainMessage(MSG_NEXT_QUESTION);
+        mHandler.sendMessage(msg);
+    }
+
+    public GamePresenter(IGameView st){
+        this.status = st;
+    }
+
+    public GamePresenter connect(final int qType){
+        if (gameSocket!=null){
+            status.onToast("socket已开启");
+            return this;
+        }
+        status.onShowDialog();
+        final IGameStatus   listener = new IGameStatus() {
             @Override
             public void open(GameSocket socket) {
                 Log.i(TAG,"socket Opened");
+                Message msg = mHandler.obtainMessage(MSG_SOCKET_OPENED);
+                mHandler.sendMessage(msg);
                 Gson gson = new Gson();
-                socket.send(gson.toJson(new PkRequest(PK_REQUEST,4,null)));
+                socket.send(gson.toJson(new PkRequest(PK_REQUEST,qType,null)));
             }
 
             @Override
             public void message(String data) {
-                JsonUtils.parseListObj(data,Question.class);
-
+                List<Question> questions = JsonUtils.parseListObj(data,Question.class);
+                print(questions);
+                Message msg = mHandler.obtainMessage(MSG_SOCKET_MESSAGE);
+                msg.obj = questions;
+                mHandler.sendMessage(msg);
             }
 
             @Override
             public void closed() {
                 Log.i(TAG,"socket closed");
+                Message msg = mHandler.obtainMessage(MSG_SOCKET_CLOSED);
+                mHandler.sendMessage(msg);
+                if (gameSocket!=null){
+                    gameSocket = null;
+                }
             }
 
             @Override
             public void error() {
                 Log.i(TAG,"socket error");
+                Message msg = mHandler.obtainMessage(MSG_SOCKET_ERROR);
+                mHandler.sendMessage(msg);
             }
         };
-
-        GameSocket gameSocket = new GameSocket(status);
+        gameSocket = new GameSocket(listener);
         gameSocket.connect();
-
-        /*
-        @SuppressWarnings("MismatchedReadAndWriteOfArray")
-        final GameSocket[] gameSocket = new GameSocket[1];
-        Observable.create(new Observable.OnSubscribe<String>() {
-            // 1. 创建被观察者 & 生产事件
-            @Override
-            public void call(final Subscriber<? super String> subscriber) {
-                Log.i(TAG,"call...");
-                    gameSocket[0] = new GameSocket(new IGameStatus() {
-                        @Override
-                        public void open() {
-                            subscriber.onNext(SOCKET_OPEN);
-                        }
-
-                        @Override
-                        public void message(String data) {
-                            subscriber.onNext(data);
-                        }
-
-                        @Override
-                        public void closed() {
-                            subscriber.onNext(SOCKET_CLOSE);
-                        }
-
-                        @Override
-                        public void error() {
-                            subscriber.onNext(ERROR);
-                        }
-                    });
-                gameSocket[0].send(PK_REQUEST);
-                }
-            })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//观察者在主线程
-                .subscribe(new Observer<String>() {
-            @Override
-            public void onNext(String value) {
-                Log.d(TAG, "对事件:"+ value +"作出响应"  );
-            }
-
-            @Override
-            public void onCompleted() {
-                Log.i(TAG,"onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, "对Error事件作出响应："+e.getMessage());
-            }
-
-        });
-        */
-
-
+        return  this;
     }
 
+    public GamePresenter send(String message){
+        gameSocket.send(message);
+        return this;
+    }
+
+
+    public void close(){
+        if (gameSocket!=null){
+            gameSocket.close();
+        }
+    }
 }
 
 

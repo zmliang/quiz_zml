@@ -131,7 +131,7 @@ public class CountDownView extends TextView {
 
     public void stop(){
         removeCallbacks(progressChangeTask);
-        reset();
+    //    reset();
         if (listener!=null)
             listener.afterProgress();
     }
@@ -164,8 +164,8 @@ public class CountDownView extends TextView {
     }
 
     private void drawOutterCircle(Canvas canvas,float outterRadius){
-        mPaint.setShadowLayer(10,2,2,Color.BLUE);
-        setLayerType(LAYER_TYPE_SOFTWARE,null);
+     //   mPaint.setShadowLayer(10,2,2,Color.BLUE);
+     //   setLayerType(LAYER_TYPE_SOFTWARE,null);
 
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(outLineWidth);
@@ -208,8 +208,12 @@ public class CountDownView extends TextView {
                 }
                 invalidate();
                 postDelayed(progressChangeTask,100);
-            }else
-                progress = validateProgress(progress);
+            }else if (progress<0){
+                if (listener!=null){
+                    listener.afterProgress();
+                    removeCallbacks(this);
+                }
+            }
         }
     };
 

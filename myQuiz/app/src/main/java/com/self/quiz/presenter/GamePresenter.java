@@ -1,13 +1,9 @@
 package com.self.quiz.presenter;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.self.quiz.game.GameSocket;
 import com.self.quiz.game.IGameStatus;
 import com.self.quiz.modal.PkRequest;
@@ -15,10 +11,7 @@ import com.self.quiz.modal.Question;
 import com.self.quiz.utils.IGameProtocol;
 import com.self.quiz.utils.JsonUtils;
 import com.self.quiz.view.IGameView;
-
-import org.json.JSONArray;
-
-import java.util.ArrayList;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 
@@ -31,55 +24,18 @@ import java.util.List;
 public class GamePresenter  implements IGameProtocol{
     private static final String TAG = GamePresenter.class.getSimpleName();
     private final IGameView status;
-    GameSocket gameSocket = null;
-    private List<Question> questions ;
-    private final Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_SOCKET_OPENED:
-                    status.opened();
-                    break;
-                case MSG_SOCKET_MESSAGE:
-                    questions = (List<Question>)msg.obj;
-                    status.next(questions.get(0),1);
-                    questions.remove(0);
-                    print(questions);
-                    break;
-                case MSG_SOCKET_CLOSED:
-                    status.closed();
-                    break;
-                case MSG_SOCKET_ERROR:
-                    status.error();
-                //    status.onToast("连接出错");
-                    break;
-                case MSG_NEXT_QUESTION:
-                    final int size = questions.size();
-                    Log.i(TAG,"size"+size);
-                    if (size<=0){
-                        status.gameover();
-                    }else {
-                        Question q = questions.get(0);
-                        status.next(q,6-size);
-                        questions.remove(0);
-                        print(questions);
-                    }
-                    break;
-                default:
-                    break;
-                  }
-            status.onCancelDialog();
-            }
-    };
+    private GameSocket gameSocket = null;
+    private myHandler mHandler  = null;
 
-    private void print(List<Question> questions){
+
+    private static void print(List<Question> questions){
         Log.i(TAG,"---------------------------------");
         for (Question question:questions){
             Log.i(TAG,question.toString());
         }
         Log.i(TAG,"------------------------------------");
     }
+
 
     public void readyNextQuestion(){
         Message msg = mHandler.obtainMessage(MSG_NEXT_QUESTION);
@@ -88,12 +44,13 @@ public class GamePresenter  implements IGameProtocol{
 
     public GamePresenter(IGameView st){
         this.status = st;
+        mHandler = new myHandler(st);
     }
 
-    public GamePresenter connect(final int qType){
+    public void connect(final int qType){
         if (gameSocket!=null){
             status.onToast("socket已开启");
-            return this;
+            return;
         }
         status.onShowDialog();
         final IGameStatus   listener = new IGameStatus() {
@@ -134,17 +91,15 @@ public class GamePresenter  implements IGameProtocol{
         };
         gameSocket = new GameSocket(listener);
         gameSocket.connect();
-        return  this;
     }
 
     public void again(int qType){
-        questions.clear();
+    //    questions.clear();
         this.send(new Gson().toJson(new PkRequest(PK_REQUEST,qType,null)));
     }
 
-    public GamePresenter send(String message){
+    public void send(String message){
         gameSocket.send(message);
-        return this;
     }
 
 
@@ -153,6 +108,55 @@ public class GamePresenter  implements IGameProtocol{
             gameSocket.close();
         }
     }
+
+
+    static class myHandler extends Handler{
+        WeakReference<IGameView> gameView;
+        List<Question> questions;
+        public myHandler(IGameView view){
+            this.gameView = new WeakReference<IGameView>(view);
+        }
+
+        @Override
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            IGameView  gameView =this.gameView.get();
+            switch (msg.what) {
+                case MSG_SOCKET_OPENED:
+                    gameView.opened();
+                    break;
+                case MSG_SOCKET_MESSAGE:
+                    questions = (List<Question>) msg.obj;
+                    gameView.next(questions.get(0), 1);
+                    questions.remove(0);
+                    print(questions);
+                    break;
+                case MSG_SOCKET_CLOSED:
+                    gameView.closed();
+                    break;
+                case MSG_SOCKET_ERROR:
+                    gameView.error();
+                    //    status.onToast("连接出错");
+                    break;
+                case MSG_NEXT_QUESTION:
+                    final int size = questions.size();
+                    Log.i(TAG, "size" + size);
+                    if (size <= 0) {
+                        gameView.gameover();
+                    } else {
+                        Question q = questions.get(0);
+                        gameView.next(q, 6 - size);
+                        questions.remove(0);
+                        print(questions);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            gameView.onCancelDialog();
+        }
+    }
+
 }
 
 

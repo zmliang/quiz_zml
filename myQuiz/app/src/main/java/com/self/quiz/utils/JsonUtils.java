@@ -28,4 +28,9 @@ public class JsonUtils {
         return list;
     }
 
+    public static <T> T parseObj(String data,Class<T> cls){
+        Gson gson = new Gson();
+        return gson.fromJson(data,cls);
+    }
+
 }

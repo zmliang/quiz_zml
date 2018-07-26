@@ -31,12 +31,47 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     }
 
-    protected void Toast(String message){
+    public void onShowDialog(final String msg){
+        if (loading == null){
+            loading = new Loading(this,msg,false);
+        }
+        if (!isFinishing())
+            loading.show();
+    }
+
+    public void onShowDialog(int resID){
+        onShowDialog(getString(resID));
+    }
+
+    public void onShowDialog(){
+        onShowDialog(getString(R.string.login_ing));
+    }
+
+    public void onCancelDialog(){
+        if (loading!=null){
+            if (loading.isShowing()){
+                loading.dismiss();
+                loading.hide();
+            }
+        }
+    }
+
+    public void Toast(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+    public void Toast(int resID){
+        Toast(getString(resID));
     }
 
     @Override
     public void finish(){
         super.finish();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        onCancelDialog();
+        loading = null;
     }
 }

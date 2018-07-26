@@ -17,11 +17,26 @@ import rx.subscriptions.CompositeSubscription;
 public class BasePresenter<T> {
     public T view;
     protected CommonApi mApi;
+
+    public  enum  URL_TYPE{
+        MY_URL,
+        GANK_URL
+
+    }
+
     private CompositeSubscription compositeSubscription;
 
-    void attachView(T view){
+    void attachView(T view,URL_TYPE urlType){
         this.view = view;
         mApi= RetrofitClient.retrofit().create(CommonApi.class);
+    }
+
+    void attachView(T view,int flag){
+        this.attachView(view);
+        mApi = RetrofitClient.newsRetrofit().create(CommonApi.class);
+    }
+    void attachView(T view){
+        attachView(view,URL_TYPE.MY_URL);
     }
 
     public void detachView(){

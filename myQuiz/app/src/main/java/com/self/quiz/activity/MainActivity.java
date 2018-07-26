@@ -2,11 +2,13 @@ package com.self.quiz.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,18 +20,21 @@ import com.bumptech.glide.Glide;
 import com.self.quiz.App;
 import com.self.quiz.R;
 import com.self.quiz.components.BaseActivity;
-import com.self.quiz.components.CountDownView;
 import com.self.quiz.components.CustomDialog;
 import com.self.quiz.components.Loading;
 import com.self.quiz.components.MenuHeader;
 import com.self.quiz.components.ResetPwdDialog;
-import com.self.quiz.game.Game;
+import com.self.quiz.fragments.BaseFragment;
 import com.self.quiz.modal.User;
 import com.self.quiz.presenter.UserCenterPresenter;
 import com.self.quiz.utils.DialogUtils;
+import com.self.quiz.utils.FragmentFactory;
 import com.self.quiz.utils.GlideCircleTransform;
 import com.self.quiz.utils.StringUtils;
 import com.self.quiz.view.IUserCenterView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.self.quiz.utils.DialogUtils.CROP_SMALL_PICTURE;
 
@@ -38,11 +43,15 @@ import static com.self.quiz.utils.DialogUtils.CROP_SMALL_PICTURE;
  * Created by zmliang on 2018/7/17.
  */
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,IUserCenterView,View.OnClickListener{
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,IUserCenterView,View.OnClickListener
+,BottomNavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = MainActivity.class.getSimpleName();
     private DrawerLayout drawer;
     private NavigationView naviView;
+    private BottomNavigationView bottomNavigationView;
+    private ViewPager viewPager;
     private UserCenterPresenter userCenterPresenter = new UserCenterPresenter(this);
+    private List<BaseFragment> fragments = new ArrayList<>();
 
 
     @Override
@@ -52,12 +61,45 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initView() {
+        fragments.add(FragmentFactory.newInstance("视频"));
+        fragments.add(FragmentFactory.newInstance("图片"));
+        fragments.add(FragmentFactory.newInstance("答题"));
 
         drawer = findViewById(R.id.drawer_layout);
         naviView = (drawer.findViewById(R.id.nav_view));
         naviView.setNavigationItemSelectedListener(this);
         naviView.addHeaderView(MenuHeader.header(this,this));
-        findViewById(R.id.start_game).setOnClickListener(this);
+        bottomNavigationView = findViewById(R.id.bottom_navigate);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        viewPager = findViewById(R.id.fragment_vp);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragments.size();
+            }
+        });
 
 
     }
@@ -81,6 +123,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 onResetPwd();
                 return;
             case R.id.nav_share:
+                break;
+            case R.id.video:
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.pics:
+                viewPager.setCurrentItem(1);
+                break;
+            case R.id.quiz:
+                viewPager.setCurrentItem(2);
                 break;
             default:
                 break;
@@ -169,10 +220,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onClick(View v) {
         final int Id = v.getId();
-        if (Id == R.id.start_game){
-            startActivity(new Intent(this, GameActivity.class));
-            return;
-        }
         onUpdateAvatar();
     }
 

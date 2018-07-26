@@ -2,7 +2,6 @@ package com.self.quiz.game;
 
 import android.util.Log;
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_10;
 import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 
@@ -20,19 +19,17 @@ public class GameSocket extends WebSocketClient {
 
     private GameSocket(URI serverURI) {
         super(serverURI);
-     //   super(serverURI,new Draft_10());
     }
 
     public GameSocket(IGameStatus status) {
         this(URI.create("ws://47.98.219.111:9002/ws"));
-     //  this(URI.create("ws://121.40.165.18:8800"));
         gameStatus = status;
     }
 
 
     @Override
-    public void onOpen(ServerHandshake handshakedata) {
-        Log.i(TAG,"onOpen:"+handshakedata.getHttpStatusMessage());
+    public void onOpen(ServerHandshake handshake) {
+        Log.i(TAG,"onOpen:"+handshake.getHttpStatusMessage());
         if (gameStatus!=null)
             gameStatus.open(this);
     }

@@ -58,17 +58,12 @@ public class LoginActivity extends BaseActivity implements ILoginView,View.OnCli
 
     @Override
     public void onShowDialog() {
-        if (loading == null){
-            loading = new Loading(this,getString(R.string.login_ing),false);
-        }
-        loading.show();
+        super.onShowDialog(getString(R.string.login_ing));
     }
 
     @Override
     public void onCancelDialog() {
-        if (loading!=null){
-            loading.hide();
-        }
+        super.onCancelDialog();
     }
 
     @Override

@@ -16,7 +16,7 @@ import com.self.quiz.fragments.NewsFragment;
 public class FragmentFactory {
 
     public static BaseFragment newInstance(String name){
-        if (name.equals("视频")){
+        if (name.equals("新闻")){
             NewsFragment fragment = new NewsFragment();
             Bundle bundle = new Bundle();
             bundle.putString("name",name);

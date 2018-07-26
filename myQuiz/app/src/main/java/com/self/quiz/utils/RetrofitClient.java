@@ -1,11 +1,7 @@
 package com.self.quiz.utils;
 
-import android.text.Html;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.self.quiz.BuildConfig;
-import com.self.quiz.presenter.BasePresenter;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +10,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -48,7 +43,7 @@ public class RetrofitClient {
                             .header("Content-Type","application/json")
                             .method(original.method(),original.body())
                             .build();
-                    return chain.proceed(request);
+                 return chain.proceed(request);
                 }
             });
             builder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
@@ -59,7 +54,6 @@ public class RetrofitClient {
             String baseUrl = CommonApi.BASE_URL;
             mRetrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    //.addConverterFactory(new StringConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .client(okHttpClient)

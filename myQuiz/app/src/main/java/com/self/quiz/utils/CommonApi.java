@@ -22,7 +22,7 @@ public interface CommonApi {
 
     String BASE_URL = "http://47.98.219.111:9002/";
     String GANK_URL_VIDEO = "http://gank.io/api/data/休息视频/5/";
-    String GANK_URL_IMAGE = "http://gank.io/api/data/福利/10/";
+    String GANK_URL_IMAGE = "https://gank.io/api/data/福利/10/";
   //  String BASE_URL = "http://127.0.0.1:8080/";
 
     @GET("user")
@@ -36,7 +36,6 @@ public interface CommonApi {
 
     @GET
     Observable<GankResult> getVideo(@Url String path);
-
 
     @GET
     Observable<String> getNews(@Url String path);

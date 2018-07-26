@@ -5,7 +5,7 @@
     <item
         android:id="@+id/video"
         android:icon="@drawable/icon_login_account"
-        android:title="视频"/>
+        android:title="新闻"/>
 
     <item
         android:id="@+id/pics"

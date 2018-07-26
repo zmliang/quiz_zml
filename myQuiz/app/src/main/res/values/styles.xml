@@ -8,6 +8,11 @@
 
     </style>
 
+    <style name="SmallGreyTextView">
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="BaseDialog" parent="@android:style/Theme.Dialog"/>
     <style name="Theme.Light.LoadingDialog" parent="@style/BaseDialog">
         <item name="android:windowBackground">@android:color/transparent</item>

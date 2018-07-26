@@ -4,7 +4,6 @@ import com.self.quiz.utils.CommonApi;
 import com.self.quiz.utils.RetrofitClient;
 
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -27,6 +26,7 @@ public class BasePresenter<T> {
     private CompositeSubscription compositeSubscription;
 
     void attachView(T view,URL_TYPE urlType){
+
         this.view = view;
         mApi= RetrofitClient.retrofit().create(CommonApi.class);
     }

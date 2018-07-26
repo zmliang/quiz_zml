@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initView() {
-        fragments.add(FragmentFactory.newInstance("视频"));
+        fragments.add(FragmentFactory.newInstance("新闻"));
         fragments.add(FragmentFactory.newInstance("图片"));
         fragments.add(FragmentFactory.newInstance("答题"));
 

@@ -27,6 +27,7 @@ public class PicsFragment extends BaseFragment implements IPicsView{
     private PicsPresenter picsPresenter = new PicsPresenter(this);
     private RecyclerView picsList;
     private PicsAdapter adapter;
+    private boolean loadingMore = false;
 
     private int page = 1;
 
@@ -51,6 +52,11 @@ public class PicsFragment extends BaseFragment implements IPicsView{
                     int totalCount = manager1.getItemCount();
                     Log.i(TAG,"lastPos:"+lastPos+"; total:"+totalCount);
                     if (lastPos == totalCount-1 && isSlidingToLast){
+                        if (loadingMore){
+                            onToast("获取中...");
+                            return;
+                        }
+                        loadingMore = true;
                         picsPresenter.getPics(++page);
                     }
                 }
@@ -84,5 +90,17 @@ public class PicsFragment extends BaseFragment implements IPicsView{
     public void loadPics(List<Data> list) {
         adapter.setDatas(list);
         adapter.notifyDataSetChanged();
+        loadingMore = false;
+    }
+
+    @Override
+    public void failed() {
+        onToast("网络失败...");
+        loadingMore = false;
+    }
+
+    @Override
+    public void finished() {
+        loadingMore = false;
     }
 }

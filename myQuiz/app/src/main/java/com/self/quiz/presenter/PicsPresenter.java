@@ -39,7 +39,6 @@ public class PicsPresenter extends BasePresenter<IPicsView> {
 
 
     public void getPics(int page){
-        picsView.onShowDialog();
         final CallBack<JsonRootBean> suscriber = new CallBack<JsonRootBean>() {
             @Override
             public void onSuccess(JsonRootBean model) {
@@ -49,12 +48,12 @@ public class PicsPresenter extends BasePresenter<IPicsView> {
 
             @Override
             public void onFailed(String message) {
-                picsView.onCancelDialog();
+                picsView.failed();
             }
 
             @Override
             public void onFinished() {
-                picsView.onCancelDialog();
+                picsView.finished();
             }
         };
 

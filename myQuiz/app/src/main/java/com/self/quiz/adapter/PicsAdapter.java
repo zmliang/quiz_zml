@@ -22,9 +22,10 @@ import java.util.List;
  */
 
 public class PicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private static final String TAG = PicsAdapter.class.getSimpleName();
 
-    public final static int NORMAL = 1;
-    public final static int FOOTER = 2;
+    private final static int NORMAL = 1;
+    private final static int FOOTER = 2;
 
     private List<Data> datas = new ArrayList<>();
     private Context mContext;
@@ -59,7 +60,8 @@ public class PicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof PicsAdapter.ItemViewHolder){
-            Glide.with(mContext).load(datas.get(position).getThumbURL())
+            Log.i(TAG,datas.get(position).toString());
+            Glide.with(mContext).load(datas.get(position).getMiddleURL())
                     .asBitmap()
                     .into(((PicsAdapter.ItemViewHolder) holder).imgView);
         }

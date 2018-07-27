@@ -71,7 +71,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         naviView.addHeaderView(MenuHeader.header(this,this));
         bottomNavigationView = findViewById(R.id.bottom_navigate);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-
         viewPager = findViewById(R.id.fragment_vp);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -89,6 +88,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             }
         });
+        bottomNavigationView.setItemIconTintList(null);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

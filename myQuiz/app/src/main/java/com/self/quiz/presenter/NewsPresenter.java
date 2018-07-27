@@ -51,7 +51,6 @@ public class NewsPresenter extends BasePresenter<INewsView> {
     }
 
     public void getNews(int page){
-        newsView.onShowDialog();
         final CallBack<String> subscriber = new CallBack<String>() {
             @Override
             public void onSuccess(String model) {
@@ -60,12 +59,12 @@ public class NewsPresenter extends BasePresenter<INewsView> {
 
             @Override
             public void onFailed(String message) {
-                newsView.onCancelDialog();
+                newsView.failed();
             }
 
             @Override
             public void onFinished() {
-                newsView.onCancelDialog();
+                newsView.finished();
             }
         };
 

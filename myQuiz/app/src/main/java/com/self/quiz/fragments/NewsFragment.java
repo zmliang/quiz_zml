@@ -35,10 +35,12 @@ public class NewsFragment extends BaseFragment implements INewsView,SwipeRefresh
     private RecyclerView newsList;
     private NewsAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    int page = 1;
+    private int page = 1;
+    private boolean loading = false;
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
+        loading = true;
         newsPresenter.getNews(page);
     }
 
@@ -68,7 +70,11 @@ public class NewsFragment extends BaseFragment implements INewsView,SwipeRefresh
                     int totalCount = manager1.getItemCount();
                     Log.i(TAG,"lastPos:"+lastPos+"; total:"+totalCount);
                     if (lastPos == totalCount-1 && isSlidingToLast){
-                        onToast("加载中...");
+                        if (loading){
+                            onToast("正在加载...");
+                            return;
+                        }
+                        loading = true;
                         newsPresenter.getNews(++page);
                     }
                 }
@@ -95,9 +101,18 @@ public class NewsFragment extends BaseFragment implements INewsView,SwipeRefresh
     public void fetchData(List<NewsItem> list) {
         adapter.setDatas(list);
         adapter.notifyDataSetChanged();
-        if (page == 1){
-            onToast("已刷新...");
-        }
+        loading = false;
+    }
+
+    @Override
+    public void failed() {
+        onToast("加载失败...");
+        loading = false;
+    }
+
+    @Override
+    public void finished() {
+        loading = false;
     }
 
     @Override

@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface IPicsView extends BaseView{
     void loadPics(List<Data> list);
+    void failed();
+    void finished();
 }

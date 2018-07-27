@@ -1,7 +1,6 @@
 package com.self.quiz.view;
 
 import com.self.quiz.modal.NewsItem;
-
 import java.util.List;
 
 /**
@@ -11,5 +10,9 @@ import java.util.List;
  */
 
 public interface INewsView extends BaseView{
+
     void fetchData(List<NewsItem> list);
+    void failed();
+    void finished();
+
 }

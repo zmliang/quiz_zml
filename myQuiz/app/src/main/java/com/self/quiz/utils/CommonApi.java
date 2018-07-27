@@ -43,7 +43,6 @@ public interface CommonApi {
     @GET
     Observable<String> getNews(@Url String path);
 
-
     @GET
     Observable<JsonRootBean> getPics(@Url String path);
 

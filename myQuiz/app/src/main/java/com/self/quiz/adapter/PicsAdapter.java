@@ -2,6 +2,7 @@ package com.self.quiz.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.self.quiz.R;
+import com.self.quiz.modal.Data;
 import com.self.quiz.modal.GankItem;
 
 import java.util.ArrayList;
@@ -24,14 +26,14 @@ public class PicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public final static int NORMAL = 1;
     public final static int FOOTER = 2;
 
-    private List<GankItem> datas = new ArrayList<>();
+    private List<Data> datas = new ArrayList<>();
     private Context mContext;
 
     public PicsAdapter(Context context){
         mContext = context;
     }
 
-    public void setDatas(List<GankItem> dat){
+    public void setDatas(List<Data> dat){
         this.datas.addAll(dat);
     }
 
@@ -48,16 +50,18 @@ public class PicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == FOOTER){
-            return new NewsAdapter.FooterViewHolder(LayoutInflater.from(mContext).inflate(R.layout.footer,parent,false));
+            return new PicsAdapter.FooterViewHolder(LayoutInflater.from(mContext).inflate(R.layout.footer,parent,false));
         }else {
-            return new NewsAdapter.ItemViewHolder(LayoutInflater.from(mContext).inflate(R.layout.pics_list_item,parent,false));
+            return new PicsAdapter.ItemViewHolder(LayoutInflater.from(mContext).inflate(R.layout.pics_list_item,parent,false));
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof NewsAdapter.ItemViewHolder){
-            Glide.with(mContext).load(datas.get(position).getUrl()).into(((NewsAdapter.ItemViewHolder) holder).imgView);
+        if (holder instanceof PicsAdapter.ItemViewHolder){
+            Glide.with(mContext).load(datas.get(position).getThumbURL())
+                    .asBitmap()
+                    .into(((PicsAdapter.ItemViewHolder) holder).imgView);
         }
     }
 

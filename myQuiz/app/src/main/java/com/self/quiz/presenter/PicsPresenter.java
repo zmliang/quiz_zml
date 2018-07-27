@@ -2,7 +2,9 @@ package com.self.quiz.presenter;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.self.quiz.modal.GankResult;
+import com.self.quiz.modal.JsonRootBean;
 import com.self.quiz.utils.CallBack;
 import com.self.quiz.utils.CommonApi;
 import com.self.quiz.view.IPicsView;
@@ -16,48 +18,33 @@ import java.lang.ref.WeakReference;
 public class PicsPresenter extends BasePresenter<IPicsView> {
     private static final String TAG = PicsPresenter.class.getSimpleName();
     private IPicsView picsView;
-    private PicsCB picsCB;
+    private final int COUNT = 10;
 
     public PicsPresenter(IPicsView view){
         picsView = view;
         attachView(picsView);
-     //   picsCB = new PicsCB(picsView);
-    }
-    static class PicsCB extends CallBack<GankResult> {
-        private WeakReference<IPicsView> viewWeakReference;
-        public PicsCB(IPicsView view){
-            viewWeakReference = new WeakReference<IPicsView>(view);
-        }
-        @Override
-        public void onSuccess(GankResult model) {
-            viewWeakReference.get().loadPics(model.getResults());
-        }
 
-        @Override
-        public void onFailed(String message) {
-            Log.i(TAG,"Failed:"+message);
-            viewWeakReference.get().onCancelDialog();
-        }
-
-        @Override
-        public void onFinished() {
-            viewWeakReference.get().onCancelDialog();
-        }
     }
 
     @Override
     public void detachView(){
         super.detachView();
-        picsCB = null;
+
     }
+
+    private String buildUrlString(int page){
+        return CommonApi.BAIDU_IMG_URL+"pn="+COUNT*page+"&rn="+COUNT+"&gsm=1e0&"+System.currentTimeMillis()+"=";
+    }
+
+
 
     public void getPics(int page){
         picsView.onShowDialog();
-        final CallBack<GankResult> suscriber = new CallBack<GankResult>() {
+        final CallBack<JsonRootBean> suscriber = new CallBack<JsonRootBean>() {
             @Override
-            public void onSuccess(GankResult model) {
-                Log.i(TAG,"pics result:"+model.toString());
-                picsView.loadPics(model.getResults());
+            public void onSuccess(JsonRootBean model) {
+                Log.i(TAG,"pics result:"+model.getData().size());
+                picsView.loadPics(model.getData());
             }
 
             @Override
@@ -71,6 +58,6 @@ public class PicsPresenter extends BasePresenter<IPicsView> {
             }
         };
 
-        addSubscription(mApi.getVideo(CommonApi.GANK_URL_IMAGE+page),suscriber);
+        addSubscription(mApi.getPics(buildUrlString(page)),suscriber);
     }
 }

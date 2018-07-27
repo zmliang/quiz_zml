@@ -1,6 +1,7 @@
 package com.self.quiz.utils;
 
 import com.self.quiz.modal.HttpResult;
+import com.self.quiz.modal.JsonRootBean;
 import com.self.quiz.modal.User;
 import com.self.quiz.modal.GankResult;
 
@@ -23,7 +24,9 @@ public interface CommonApi {
     String BASE_URL = "http://47.98.219.111:9002/";
     String GANK_URL_IMAGE = "http://gank.io/api/data/福利/10/";
     String QQ_NEWS_BASE_URL = "http://news.qq.com";
-  //  String BASE_URL = "http://127.0.0.1:8080/";
+    String BAIDU_IMG_URL = "http://image.baidu.com//search/acjson?tn=resultjson_com&ipn=rj&ct=201326592&is=&fp=result&" +
+            "queryWord=美女图片&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=&" +
+            "word=美女图片&s=&se=&tab=&width=&height=&face=&istype=&qc=&nc=1&fr=&cg=girl&";
 
     @GET("user")
     Observable<HttpResult<User>> login(@Query("nickName")String nickName,@Query("password")String password);
@@ -39,6 +42,11 @@ public interface CommonApi {
 
     @GET
     Observable<String> getNews(@Url String path);
+
+
+    @GET
+    Observable<JsonRootBean> getPics(@Url String path);
+
 
 }
 

@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.self.quiz.R;
 import com.self.quiz.adapter.PicsAdapter;
+import com.self.quiz.modal.Data;
 import com.self.quiz.modal.GankItem;
 import com.self.quiz.presenter.PicsPresenter;
 import com.self.quiz.view.IPicsView;
@@ -67,6 +68,7 @@ public class PicsFragment extends BaseFragment implements IPicsView{
         });
         manager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new PicsAdapter(this.getContext());
+        picsList.setAdapter(adapter);
         picsPresenter.getPics(page);
     }
 
@@ -79,7 +81,7 @@ public class PicsFragment extends BaseFragment implements IPicsView{
 
 
     @Override
-    public void loadPics(List<GankItem> list) {
+    public void loadPics(List<Data> list) {
         adapter.setDatas(list);
         adapter.notifyDataSetChanged();
     }

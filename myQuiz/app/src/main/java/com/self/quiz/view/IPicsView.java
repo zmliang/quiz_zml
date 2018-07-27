@@ -1,5 +1,6 @@
 package com.self.quiz.view;
 
+import com.self.quiz.modal.Data;
 import com.self.quiz.modal.GankItem;
 
 import java.util.List;
@@ -9,5 +10,5 @@ import java.util.List;
  */
 
 public interface IPicsView extends BaseView{
-    void loadPics(List<GankItem> list);
+    void loadPics(List<Data> list);
 }

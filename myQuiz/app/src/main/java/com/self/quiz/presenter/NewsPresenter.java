@@ -23,7 +23,7 @@ public class NewsPresenter extends BasePresenter<INewsView> {
     public NewsPresenter(INewsView view){
         newsView = view;
         attachView(view,0);
-        callback = new NewsCB(newsView);
+    //    callback = new NewsCB(newsView);
     }
 
     static class NewsCB extends CallBack<String> {
@@ -51,7 +51,25 @@ public class NewsPresenter extends BasePresenter<INewsView> {
     }
 
     public void getNews(int page){
-        addSubscription(mApi.getNews("http://news.qq.com/c/816guonei_"+page +".htm?0.9464406841442563"),callback);
+        newsView.onShowDialog();
+        final CallBack<String> subscriber = new CallBack<String>() {
+            @Override
+            public void onSuccess(String model) {
+                newsView.fetchData(HtmlParse.parseHtmlData(model));
+            }
+
+            @Override
+            public void onFailed(String message) {
+                newsView.onCancelDialog();
+            }
+
+            @Override
+            public void onFinished() {
+                newsView.onCancelDialog();
+            }
+        };
+
+        addSubscription(mApi.getNews("http://news.qq.com/c/816guonei_"+page +".htm?0.9464406841442563"),subscriber);
     }
 
 }

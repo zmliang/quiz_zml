@@ -100,8 +100,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 return fragments.size();
             }
         });
-
-
+        viewPager.setOffscreenPageLimit(2);
     }
 
 

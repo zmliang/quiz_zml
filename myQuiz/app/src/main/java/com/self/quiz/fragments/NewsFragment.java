@@ -1,7 +1,9 @@
 package com.self.quiz.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import com.self.quiz.R;
 import com.self.quiz.adapter.NewsAdapter;
 import com.self.quiz.modal.NewsItem;
 import com.self.quiz.presenter.NewsPresenter;
+import com.self.quiz.utils.CommonApi;
 import com.self.quiz.view.INewsView;
 
 import java.util.List;
@@ -25,7 +28,8 @@ import java.util.List;
  * CopyRight:  JinkeGroup
  */
 
-public class NewsFragment extends BaseFragment implements INewsView,SwipeRefreshLayout.OnRefreshListener{
+public class NewsFragment extends BaseFragment implements INewsView,SwipeRefreshLayout.OnRefreshListener
+,NewsAdapter.OnNewsItemClickListener{
     private final static String TAG = NewsFragment.class.getSimpleName();
     private NewsPresenter newsPresenter = new NewsPresenter(this);
     private RecyclerView newsList;
@@ -82,6 +86,7 @@ public class NewsFragment extends BaseFragment implements INewsView,SwipeRefresh
         });
         manager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new NewsAdapter(getContext());
+        adapter.setListener(this);
         newsList.setAdapter(adapter);
     }
 
@@ -100,5 +105,13 @@ public class NewsFragment extends BaseFragment implements INewsView,SwipeRefresh
         swipeRefreshLayout.setRefreshing(false);
         page = 1;
         newsPresenter.getNews(page);
+    }
+
+    @Override
+    public void onNewsItemClicked(NewsItem news, View view) {
+        Log.i(TAG,"点击了："+news.toString());
+        Uri uri = Uri.parse(CommonApi.QQ_NEWS_BASE_URL+news.getNewsDetailUrl());
+        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+        startActivity(intent);
     }
 }

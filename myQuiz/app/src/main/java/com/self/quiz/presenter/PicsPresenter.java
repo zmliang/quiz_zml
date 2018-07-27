@@ -21,7 +21,7 @@ public class PicsPresenter extends BasePresenter<IPicsView> {
     public PicsPresenter(IPicsView view){
         picsView = view;
         attachView(picsView);
-        picsCB = new PicsCB(picsView);
+     //   picsCB = new PicsCB(picsView);
     }
     static class PicsCB extends CallBack<GankResult> {
         private WeakReference<IPicsView> viewWeakReference;
@@ -52,6 +52,25 @@ public class PicsPresenter extends BasePresenter<IPicsView> {
     }
 
     public void getPics(int page){
-        addSubscription(mApi.getVideo(CommonApi.GANK_URL_IMAGE+page),picsCB);
+        picsView.onShowDialog();
+        final CallBack<GankResult> suscriber = new CallBack<GankResult>() {
+            @Override
+            public void onSuccess(GankResult model) {
+                Log.i(TAG,"pics result:"+model.toString());
+                picsView.loadPics(model.getResults());
+            }
+
+            @Override
+            public void onFailed(String message) {
+                picsView.onCancelDialog();
+            }
+
+            @Override
+            public void onFinished() {
+                picsView.onCancelDialog();
+            }
+        };
+
+        addSubscription(mApi.getVideo(CommonApi.GANK_URL_IMAGE+page),suscriber);
     }
 }

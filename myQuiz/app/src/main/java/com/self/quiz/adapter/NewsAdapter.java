@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +28,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public final static int NORMAL = 1;
     public final static int FOOTER = 2;
+    private OnNewsItemClickListener listener;
 
     private List<NewsItem> datas = new ArrayList<>();
     private Context mContext;
@@ -57,12 +60,25 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    public void setListener(OnNewsItemClickListener l){
+        this.listener = l;
+    }
+
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder){
             Glide.with(mContext).load(datas.get(position).getUrlImgAddress()).into(((ItemViewHolder) holder).imgView);
             ((ItemViewHolder) holder).title.setText(datas.get(position).getNewsTitle());
             ((ItemViewHolder) holder).summary.setText(datas.get(position).getNewsSummary());
+            if (listener!=null){
+                ((ItemViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onNewsItemClicked(datas.get(position),((ItemViewHolder) holder).container);
+                    }
+                });
+            }
+
         }
     }
 
@@ -75,12 +91,14 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
          ImageView imgView;
          TextView title;
          TextView summary;
+         RelativeLayout container;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             imgView = itemView.findViewById(R.id.news_img);
             title = itemView.findViewById(R.id.news_title);
             summary = itemView.findViewById(R.id.news_summary);
+            container = itemView.findViewById(R.id.news_item_container);
         }
     }
     static class FooterViewHolder extends RecyclerView.ViewHolder{
@@ -89,5 +107,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             footer = itemView.findViewById(R.id.progressBar);
         }
+    }
+
+
+    public interface OnNewsItemClickListener{
+        void onNewsItemClicked(NewsItem news,View view);
     }
 }

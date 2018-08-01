@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="我去我去"
+    <Button
+        android:id="@+id/start_quiz"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

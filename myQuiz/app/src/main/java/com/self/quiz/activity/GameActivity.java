@@ -57,27 +57,16 @@ public class GameActivity extends BaseActivity implements IGameView,CountDownVie
         optionBox = findViewById(R.id.linearLayout3);
     }
 
-    private void animOpen(final View view, int height){
+    private void animOpen(final View view, int height,AnimatorListenerAdapter adapter){
         view.setVisibility(View.VISIBLE);
         ValueAnimator animator =createDropAnimator(view,0,height);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-            }
-        });
+        animator.addListener(adapter);
         animator.start();
     }
 
-    private void animClose(final View view, int height){
+    private void animClose(final View view, int height,AnimatorListenerAdapter adapter){
         ValueAnimator animator = createDropAnimator(view,height,0);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                view.setVisibility(View.GONE);
-            }
-        });
+        animator.addListener(adapter);
         animator.start();
     }
 
@@ -151,28 +140,37 @@ public class GameActivity extends BaseActivity implements IGameView,CountDownVie
 
     @Override
     public void next(Question question,int index) {
-        resetOption();
         currentQues = question;
         anim(question,index);
     }
 
     private void anim( final Question question,final int index){
-        optionA.setText(question.getOptionA());
-        optionB.setText(question.getOptionB());
-        optionC.setText(question.getOptionC());
-        optionD.setText(question.getOptionD());
         questionContent.postDelayed(new Runnable() {
             @Override
             public void run() {
-                animOpen(questionContent,300);
-                questionContent.setText(question.getQuestionContent());
+                animOpen(questionContent, 300, new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        questionContent.setText(question.getQuestionContent());
+                    }
+                });
             }
         },600);
 
         optionBox.postDelayed(new Runnable() {
             @Override
             public void run() {
-                animOpen(optionBox,900);
+                animOpen(optionBox, 900, new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        optionA.setText(question.getOptionA());
+                        optionB.setText(question.getOptionB());
+                        optionC.setText(question.getOptionC());
+                        optionD.setText(question.getOptionD());
+                    }
+                });
             }
         },700);
         timer.postDelayed(new Runnable() {
@@ -219,13 +217,36 @@ public class GameActivity extends BaseActivity implements IGameView,CountDownVie
         optionBox.postDelayed(new Runnable() {
             @Override
             public void run() {
-                animClose(optionBox,900);
+                animClose(optionBox,900,new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        optionA.setText("");
+                        optionB.setText("");
+                        optionC.setText("");
+                        optionD.setText("");
+                        optionB.setBackgroundColor(Color.TRANSPARENT);
+                        optionC.setBackgroundColor(Color.TRANSPARENT);
+                        optionD.setBackgroundColor(Color.TRANSPARENT);
+                        optionA.setBackgroundColor(Color.TRANSPARENT);
+                        optionBox.setVisibility(View.GONE);
+
+                    }
+                });
             }
         },300);
         questionContent.postDelayed(new Runnable() {
             @Override
             public void run() {
-                animClose(questionContent,300);
+                animClose(questionContent,300,new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        questionContent.setText("");
+                        questionContent.setVisibility(View.GONE);
+
+                    }
+                });
                 gamePresenter.readyNextQuestion();
             }
         },450);

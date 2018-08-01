@@ -1,8 +1,10 @@
 package com.self.quiz.fragments;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.self.quiz.R;
+import com.self.quiz.activity.GameActivity;
 
 /**
  * Author   :  Tomcat
@@ -18,6 +20,11 @@ public class QuizFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-
+        view.findViewById(R.id.start_quiz).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), GameActivity.class));
+            }
+        });
     }
 }

@@ -17,7 +17,6 @@ import com.self.quiz.components.BaseActivity;
 import com.self.quiz.modal.User;
 import com.self.quiz.presenter.LoginPresenter;
 import com.self.quiz.view.ILoginView;
-import com.self.quiz.components.Loading;
 
 
 public class LoginActivity extends BaseActivity implements ILoginView,View.OnClickListener,CompoundButton.OnCheckedChangeListener{
